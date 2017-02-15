@@ -1,0 +1,6 @@
+packages/
+RuleService/bin/
+RuleService.Tests/bin/
+RuleService/obj/
+RuleService.Tests/obj/
+.vs/
