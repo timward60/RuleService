@@ -5,6 +5,6 @@
     public sealed class ExpressionVariable : Expression
     {
         [Required]
-        int RuleVariableId { get; set; }
+        public int RuleVariableId { get; set; }
     }
 }

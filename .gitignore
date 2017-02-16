@@ -4,3 +4,5 @@ RuleService.Tests/bin/
 RuleService/obj/
 RuleService.Tests/obj/
 .vs/
+RuleServiceClient/obj/
+RuleServiceClient/bin/

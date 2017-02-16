@@ -1,31 +1,32 @@
 ﻿namespace RuleService.Controllers
 {
-    using System;
     using System.Data;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.Http.OData;
+    using System.Web.OData;
     using Models;
+    using Repository;
+    using Repository.Fake;
 
     public class RuleVariablesController : ODataController
     {
-        private RuleServiceDataContext db = new RuleServiceDataContext();
+        private IRepository _repository = FakeRepository.Instance;
 
         // GET: odata/RuleVariables
         [EnableQuery]
         public IQueryable<RuleVariable> GetRuleVariables()
         {
-            return db.RuleVariables;
+            return _repository.RuleVariables;
         }
 
         // GET: odata/RuleVariables(5)
         [EnableQuery]
         public SingleResult<RuleVariable> GetRuleVariable([FromODataUri] int key)
         {
-            return SingleResult.Create(db.RuleVariables.Where(ruleVariable => ruleVariable.Id == key));
+            return SingleResult.Create(_repository.RuleVariables.Where(ruleVariable => ruleVariable.Id == key));
         }
 
         // PUT: odata/RuleVariables(5)
@@ -38,7 +39,7 @@
                 return BadRequest(ModelState);
             }
 
-            RuleVariable ruleVariable = await db.RuleVariables.FindAsync(key);
+            RuleVariable ruleVariable = await _repository.RuleVariables.FindAsync(key);
             if (ruleVariable == null)
             {
                 return NotFound();
@@ -48,7 +49,7 @@
 
             try
             {
-                await db.SaveChangesAsync();
+                await _repository.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -73,11 +74,11 @@
                 return BadRequest(ModelState);
             }
 
-            db.RuleVariables.Add(ruleVariable);
+            _repository.RuleVariables.Add(ruleVariable);
 
             try
             {
-                await db.SaveChangesAsync();
+                await _repository.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
@@ -105,7 +106,7 @@
                 return BadRequest(ModelState);
             }
 
-            RuleVariable ruleVariable = await db.RuleVariables.FindAsync(key);
+            RuleVariable ruleVariable = await _repository.RuleVariables.FindAsync(key);
             if (ruleVariable == null)
             {
                 return NotFound();
@@ -115,7 +116,7 @@
 
             try
             {
-                await db.SaveChangesAsync();
+                await _repository.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -135,14 +136,14 @@
         // DELETE: odata/RuleVariables(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            RuleVariable ruleVariable = await db.RuleVariables.FindAsync(key);
+            RuleVariable ruleVariable = await _repository.RuleVariables.FindAsync(key);
             if (ruleVariable == null)
             {
                 return NotFound();
             }
 
-            db.RuleVariables.Remove(ruleVariable);
-            await db.SaveChangesAsync();
+            _repository.RuleVariables.Remove(ruleVariable);
+            await _repository.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -151,14 +152,14 @@
         {
             if (disposing)
             {
-                db.Dispose();
+                _repository.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool RuleVariableExists(int key)
         {
-            return db.RuleVariables.Count(e => e.Id == key) > 0;
+            return _repository.RuleVariables.Count(e => e.Id == key) > 0;
         }
     }
 }

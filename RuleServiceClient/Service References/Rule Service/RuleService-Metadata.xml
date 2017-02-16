@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="RuleService.Models" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="Rule">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <Property Name="Expression" Type="RuleService.Models.Expressions.Expression" />
+        <NavigationProperty Name="Variables" Type="Collection(RuleService.Models.RuleVariable)" />
+      </EntityType>
+      <EntityType Name="RuleVariable">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <Property Name="State" Type="Edm.Boolean" Nullable="false" />
+      </EntityType>
+    </Schema>
+    <Schema Namespace="RuleService.Models.Expressions" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <ComplexType Name="Expression" Abstract="true" />
+      <ComplexType Name="ExpressionVariable" BaseType="RuleService.Models.Expressions.Expression">
+        <Property Name="RuleVariableId" Type="Edm.Int32" Nullable="false" />
+      </ComplexType>
+      <ComplexType Name="ExpressionUnaryOperation" BaseType="RuleService.Models.Expressions.Expression">
+        <Property Name="Operator" Type="RuleService.Models.Expressions.ExpressionUnaryOperator" Nullable="false" />
+        <Property Name="Operand" Type="RuleService.Models.Expressions.Expression" Nullable="false" />
+      </ComplexType>
+      <ComplexType Name="ExpressionBinaryOperation" BaseType="RuleService.Models.Expressions.Expression">
+        <Property Name="Operator" Type="RuleService.Models.Expressions.ExpressionBinaryOperator" Nullable="false" />
+        <Property Name="FirstOperand" Type="RuleService.Models.Expressions.Expression" Nullable="false" />
+        <Property Name="SecondOperand" Type="RuleService.Models.Expressions.Expression" Nullable="false" />
+      </ComplexType>
+      <EnumType Name="ExpressionBinaryOperator">
+        <Member Name="Or" Value="0" />
+        <Member Name="And" Value="1" />
+      </EnumType>
+      <EnumType Name="ExpressionUnaryOperator">
+        <Member Name="Not" Value="0" />
+      </EnumType>
+    </Schema>
+    <Schema Namespace="Default" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="Container">
+        <EntitySet Name="Rules" EntityType="RuleService.Models.Rule">
+          <NavigationPropertyBinding Path="Variables" Target="RuleVariables" />
+        </EntitySet>
+        <EntitySet Name="RuleVariables" EntityType="RuleService.Models.RuleVariable" />
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

@@ -1,6 +1,5 @@
 ﻿namespace RuleService.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Expressions;
@@ -13,9 +12,8 @@
         [Required]
         public string Name { get; set; }
 
-        //[Required]
-        //Expression Expression { get; set; }
+        public Expression Expression { get; set; }
 
-        //ICollection<RuleVariable> Variable { get; set; }
+        public ICollection<RuleVariable> Variables { get; set; }
     }
 }
