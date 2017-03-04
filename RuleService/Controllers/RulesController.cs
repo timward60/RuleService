@@ -31,7 +31,7 @@
         // PUT: odata/Rules(5)
         public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<Rule> patch)
         {
-            Validate(patch.GetEntity());
+            Validate(patch.GetInstance());
 
             if (!ModelState.IsValid)
             {
@@ -98,7 +98,7 @@
         [AcceptVerbs("PATCH", "MERGE")]
         public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<Rule> patch)
         {
-            Validate(patch.GetEntity());
+            Validate(patch.GetInstance());
 
             if (!ModelState.IsValid)
             {
